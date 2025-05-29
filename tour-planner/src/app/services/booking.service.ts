@@ -1,23 +1,20 @@
 import { Injectable } from '@angular/core';
 import { TourBooking } from '../models/tour-booking';
 
-
 @Injectable({
   providedIn: 'root'
 })
 export class BookingService {
-  private storageKey = 'tourBookings';
+  private STORAGE_KEY = 'bookings';
 
   addBooking(booking: TourBooking): void {
     const bookings = this.getBookings();
-    booking.id = Date.now().toString();
-    booking.bookingDate = new Date().toISOString();
     bookings.push(booking);
-    localStorage.setItem(this.storageKey, JSON.stringify(bookings));
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(bookings));
   }
 
   getBookings(): TourBooking[] {
-    const data = localStorage.getItem(this.storageKey);
+    const data = localStorage.getItem(this.STORAGE_KEY);
     return data ? JSON.parse(data) : [];
   }
 }

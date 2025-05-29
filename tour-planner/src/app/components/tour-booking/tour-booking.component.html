@@ -1,14 +1,94 @@
-<div *ngIf="f.travelerName.errors?.['required'] && f.travelerName.touched">Name is required.</div>
-<div *ngIf="f.travelerName.errors?.['minlength']">Min 3 characters.</div>
-<div *ngIf="f.travelerName.errors?.['lettersOnly']">Only letters and spaces.</div>
+<h2>Book Your Tour</h2>
 
-<div *ngIf="f.travelerEmail.errors?.['required']">Email is required.</div>
-<div *ngIf="f.travelerEmail.errors?.['email']">Invalid email.</div>
+<form [formGroup]="bookingForm" (ngSubmit)="onSubmit()" novalidate>
 
-<div *ngIf="f.numberOfTravelers.errors?.['min']">Must be at least 1.</div>
+  <!-- Destination -->
+  <label>
+    Destination:
+    <input type="text" formControlName="destination" />
+  </label>
+  <div *ngIf="f.destination.touched && f.destination.errors">
+    <small *ngIf="f.destination.errors['required']">Destination is required.</small>
+  </div>
 
-<div *ngIf="f.departureDate.errors?.['futureDate']">Must be today or future.</div>
+  <!-- Traveler Name -->
+  <label>
+    Traveler Name:
+    <input type="text" formControlName="travelerName" />
+  </label>
+  <div *ngIf="f.travelerName.touched && f.travelerName.errors">
+    <small *ngIf="f.travelerName.errors['required']">Name is required.</small>
+    <small *ngIf="f.travelerName.errors['minlength']">Name must be at least 3 characters.</small>
+    <small *ngIf="f.travelerName.errors['lettersOnly']">Only letters and spaces allowed.</small>
+  </div>
 
-<div *ngIf="bookingForm.errors?.['returnBeforeDeparture']">Return must be after departure.</div>
+  <!-- Traveler Email -->
+  <label>
+    Email:
+    <input type="email" formControlName="travelerEmail" />
+  </label>
+  <div *ngIf="f.travelerEmail.touched && f.travelerEmail.errors">
+    <small *ngIf="f.travelerEmail.errors['required']">Email is required.</small>
+    <small *ngIf="f.travelerEmail.errors['email']">Enter a valid email address.</small>
+  </div>
 
-<div *ngIf="f.termsAccepted.errors?.['required'] && f.termsAccepted.touched">Must accept terms.</div>
+  <!-- Number of Travelers -->
+  <label>
+    Number of Travelers:
+    <input type="number" formControlName="numberOfTravelers" />
+  </label>
+  <div *ngIf="f.numberOfTravelers.touched && f.numberOfTravelers.errors">
+    <small *ngIf="f.numberOfTravelers.errors['required']">This field is required.</small>
+    <small *ngIf="f.numberOfTravelers.errors['min']">At least 1 traveler required.</small>
+  </div>
+
+  <!-- Departure Date -->
+  <label>
+    Departure Date:
+    <input type="date" formControlName="departureDate" />
+  </label>
+  <div *ngIf="f.departureDate.touched && f.departureDate.errors">
+    <small *ngIf="f.departureDate.errors['required']">Departure date is required.</small>
+    <small *ngIf="f.departureDate.errors['futureDate']">Date must be in the future.</small>
+  </div>
+
+  <!-- Return Date -->
+  <label>
+    Return Date:
+    <input type="date" formControlName="returnDate" />
+  </label>
+  <div *ngIf="f.returnDate.touched && f.returnDate.errors">
+    <small *ngIf="f.returnDate.errors['required']">Return date is required.</small>
+  </div>
+  <div *ngIf="bookingForm.errors?.['returnBeforeDeparture']">
+    <small>Return date must be after departure date.</small>
+  </div>
+
+  <!-- Accommodation -->
+  <label>
+    Accommodation:
+    <input type="text" formControlName="accommodation" />
+  </label>
+  <div *ngIf="f.accommodation.touched && f.accommodation.errors">
+    <small *ngIf="f.accommodation.errors['required']">Accommodation is required.</small>
+  </div>
+
+  <!-- Visa Notes (conditionally shown) -->
+  <div *ngIf="showVisaField()">
+    <label>
+      Visa Notes:
+      <textarea formControlName="visaNotes"></textarea>
+    </label>
+  </div>
+
+  <!-- Terms and Conditions -->
+  <label>
+    <input type="checkbox" formControlName="termsAccepted" />
+    I agree to the terms and conditions.
+  </label>
+  <div *ngIf="f.termsAccepted.touched && f.termsAccepted.errors">
+    <small *ngIf="f.termsAccepted.errors['required']">You must accept the terms.</small>
+  </div>
+
+  <button type="submit" [disabled]="bookingForm.invalid">Submit</button>
+</form>

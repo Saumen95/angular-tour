@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BookingFormType } from '../../models/booking-form-type';
+import { BookingService } from '../../services/booking.service';
+import { TourBooking } from '../../models/tour-booking';
 
 @Component({
   selector: 'app-tour-booking',
@@ -14,7 +16,10 @@ import { BookingFormType } from '../../models/booking-form-type';
 export class TourBookingComponent {
   bookingForm: FormGroup<BookingFormType>;
 
-constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+     private bookingService: BookingService,
+    private router: Router) {
   this.bookingForm = this.fb.group<BookingFormType>({
     destination: this.fb.control('', Validators.required),
     travelerName: this.fb.control('', [Validators.required, Validators.minLength(3), this.lettersOnlyValidator]),
@@ -55,11 +60,28 @@ constructor(private fb: FormBuilder, private router: Router) {
     return this.f['destination'].value === 'Maldives';
   }
 
-  onSubmit() {
-    if (this.bookingForm.invalid) return;
-    const data = JSON.parse(localStorage.getItem('bookings') || '[]');
-    data.push(this.bookingForm.value);
-    localStorage.setItem('bookings', JSON.stringify(data));
-    this.router.navigate(['/bookings']);
-  }
+ onSubmit() {
+  if (this.bookingForm.invalid) return;
+
+  const formValue = this.bookingForm.value;
+
+  const newBooking: TourBooking = {
+    id: Date.now().toString(),
+    destination: formValue.destination!,
+    travelerName: formValue.travelerName!,
+    travelerEmail: formValue.travelerEmail!,
+    numberOfTravelers: formValue.numberOfTravelers!,
+    departureDate: formValue.departureDate!,
+    returnDate: formValue.returnDate!,
+    accommodation: formValue.accommodation!,
+    specialRequests: (formValue as any).specialRequests || '',
+    visaNotes: formValue.visaNotes || '',
+    bookingDate: new Date().toISOString()
+  };
+
+  this.bookingService.addBooking(newBooking);
+  this.bookingForm.reset();
+  this.router.navigate(['/bookings']);
+ }
+
 }
