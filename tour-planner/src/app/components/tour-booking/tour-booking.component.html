@@ -1,0 +1,14 @@
+<div *ngIf="f.travelerName.errors?.['required'] && f.travelerName.touched">Name is required.</div>
+<div *ngIf="f.travelerName.errors?.['minlength']">Min 3 characters.</div>
+<div *ngIf="f.travelerName.errors?.['lettersOnly']">Only letters and spaces.</div>
+
+<div *ngIf="f.travelerEmail.errors?.['required']">Email is required.</div>
+<div *ngIf="f.travelerEmail.errors?.['email']">Invalid email.</div>
+
+<div *ngIf="f.numberOfTravelers.errors?.['min']">Must be at least 1.</div>
+
+<div *ngIf="f.departureDate.errors?.['futureDate']">Must be today or future.</div>
+
+<div *ngIf="bookingForm.errors?.['returnBeforeDeparture']">Return must be after departure.</div>
+
+<div *ngIf="f.termsAccepted.errors?.['required'] && f.termsAccepted.touched">Must accept terms.</div>

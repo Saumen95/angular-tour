@@ -1,0 +1,11 @@
+<h2>Booked Tours</h2>
+<div *ngIf="bookings.length; else noBookings">
+  <ul>
+    <li *ngFor="let booking of bookings">
+      <strong>{{ booking.destination }}</strong> — {{ booking.travelerName }} ({{ booking.travelerEmail }})
+    </li>
+  </ul>
+</div>
+<ng-template #noBookings>
+  <p>No bookings found.</p>
+</ng-template>
