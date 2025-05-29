@@ -5,5 +5,5 @@ import { TourHistoryComponent } from './components/tour-history/tour-history.com
 export const routes: Routes = [
   { path: '', redirectTo: 'book-tour', pathMatch: 'full' },
   { path: 'book-tour', component: TourBookingComponent },
-  { path: 'bookings', component: TourHistoryComponent }
+   { path: 'tour-history', component: TourHistoryComponent }
 ];

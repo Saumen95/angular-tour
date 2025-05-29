@@ -81,7 +81,7 @@ export class TourBookingComponent {
 
   this.bookingService.addBooking(newBooking);
   this.bookingForm.reset();
-  this.router.navigate(['/bookings']);
+  this.router.navigate(['/tour-history']);
  }
 
 }
